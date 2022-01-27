@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ServicesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,14 +13,9 @@ use App\Http\Controllers\ServicesController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::resource('/services', ServicesController::class);
-Route::get('changeStatus', [ServicesController::class,'changeStatus']);
-
 Route::group(['namespace' => 'App\Http\Controllers'], function()
 {   
+
     /**
      * Home Routes
      */
@@ -40,6 +34,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
         Route::get('/login', 'LoginController@show')->name('login.show');
         Route::post('/login', 'LoginController@login')->name('login.perform');
 
+        Route::get('/services', function () {
+            return view('index');
+        });
+
     });
 
     Route::group(['middleware' => ['auth']], function() {
@@ -47,6 +45,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
          * Logout Routes
          */
         Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+        Route::resource('/services', ServicesController::class);
+        Route::get('changeStatus', [ServicesController::class,'changeStatus']);
     });
 });
+
+
 
